@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Speedrun Women</title>
+    <style>
+        body { font-family: sans-serif; text-align: center; padding: 2em; }
+        input { padding: 0.5em; font-size: 1em; }
+        .message { font-weight: bold; margin-top: 1em; }
+    </style>
+</head>
+<body>
+    <h1>Speedrun Women (Web)</h1>
+
+    {% if not session.start_time %}
+        <form method="post">
+            <button name="start">Start 10s Timer</button>
+        </form>
+    {% else %}
+        <p>Time is ticking... name as many women as you can!</p>
+        <form method="post">
+            <input type="text" name="name" placeholder="Type a woman" autofocus required>
+        </form>
+    {% endif %}
+
+    <p>📝 Entries:</p>
+    <ul>
+        {% for w in women %}
+            <li>{{ w }}</li>
+        {% endfor %}
+    </ul>
+
+    {% if message %}
+        <div class="message" style="color: {{ color }}">{{ message }}</div>
+    {% endif %}
+</body>
+</html>
