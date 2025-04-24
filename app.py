@@ -39,5 +39,8 @@ def index():
 
     return render_template("index.html", women=women, message=message, color=color, time_left=time_left)
 
+import os
+
 if __name__ == "__main__":
-    app.run()
+    port = int(os.environ.get("PORT", 5000))
+    app.run(host="0.0.0.0", port=port)
