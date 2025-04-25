@@ -7,7 +7,7 @@
             font-family: sans-serif;
             text-align: center;
             padding: 2em;
-            background-color: #f9f9f9;
+            background: #fff;
         }
         input, button {
             padding: 0.5em;
@@ -16,7 +16,7 @@
         .message {
             font-weight: bold;
             margin-top: 1em;
-            font-size: 1.2em;
+            font-size: 1.3em;
         }
         ul {
             list-style: none;
@@ -30,15 +30,32 @@
 <body>
     <h1>Speedrun Women (Web)</h1>
 
-    {% if not session.start_time %}
+    {% if not start_time %}
         <form method="post">
             <button name="start">Start 10s Timer</button>
         </form>
     {% else %}
-        <p>⏱ Time is ticking... name as many women as you can!</p>
+        <p id="timer">Time left: 10s</p>
         <form method="post">
             <input type="text" name="name" placeholder="Type a woman" autofocus required>
         </form>
+        <script>
+            const start = {{ start_time|int }};
+            const now = Math.floor(Date.now() / 1000);
+            let secondsLeft = Math.max(0, 10 - (now - start));
+
+            function updateTimer() {
+                if (secondsLeft > 0) {
+                    document.getElementById("timer").innerText = "Time left: " + secondsLeft + "s";
+                    secondsLeft--;
+                    setTimeout(updateTimer, 1000);
+                } else {
+                    document.getElementById("timer").innerText = "Time's up!";
+                }
+            }
+
+            updateTimer();
+        </script>
     {% endif %}
 
     <h3>📝 Entries ({{ women|length }}):</h3>
@@ -51,26 +68,5 @@
     {% if message %}
         <div class="message" style="color: {{ color }}">{{ message }}</div>
     {% endif %}
-    {% if session.start_time %}
-    <p id="timer"></p>
-    <script>
-        const start = {{ session.start_time }};
-        const now = Math.floor(Date.now() / 1000);
-        let secondsLeft = Math.max(0, 10 - (now - start));
-
-        function updateTimer() {
-            if (secondsLeft > 0) {
-                document.getElementById("timer").innerText = "Time left: " + secondsLeft + "s";
-                secondsLeft--;
-                setTimeout(updateTimer, 1000);
-            } else {
-                document.getElementById("timer").innerText = "Time's up!";
-            }
-        }
-
-        updateTimer();
-    </script>
-{% endif %}
-
 </body>
 </html>
