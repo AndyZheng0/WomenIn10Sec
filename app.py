@@ -6,6 +6,8 @@ app.secret_key = "respect_women"
 
 @app.route("/", methods=["GET", "POST"])
 def index():
+    session.permanent = True  # ✅ makes session last through multiple requests
+
     if "start_time" not in session:
         session["start_time"] = None
         session["women"] = []

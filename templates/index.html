@@ -51,5 +51,26 @@
     {% if message %}
         <div class="message" style="color: {{ color }}">{{ message }}</div>
     {% endif %}
+    {% if session.start_time %}
+    <p id="timer"></p>
+    <script>
+        const start = {{ session.start_time }};
+        const now = Math.floor(Date.now() / 1000);
+        let secondsLeft = Math.max(0, 10 - (now - start));
+
+        function updateTimer() {
+            if (secondsLeft > 0) {
+                document.getElementById("timer").innerText = "Time left: " + secondsLeft + "s";
+                secondsLeft--;
+                setTimeout(updateTimer, 1000);
+            } else {
+                document.getElementById("timer").innerText = "Time's up!";
+            }
+        }
+
+        updateTimer();
+    </script>
+{% endif %}
+
 </body>
 </html>
